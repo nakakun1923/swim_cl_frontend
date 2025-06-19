@@ -17,6 +17,7 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
+          <img src="/public/logo.png" alt="ロゴ" width={32} height={32} />
             <Link to="/" className="text-xl font-bold text-indigo-600">
               Swim Log
             </Link>

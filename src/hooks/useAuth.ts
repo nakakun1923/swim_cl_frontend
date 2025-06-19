@@ -14,6 +14,8 @@ interface LoginResponse {
   user: User;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:18080/api';
+
 export const useAuth = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +32,7 @@ export const useAuth = () => {
   const login = async (email: string, password: string) => {
     try {
       // 実際のAPIリクエストに置き換える
-      const response = await fetch('http://localhost:18080/api/login', {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

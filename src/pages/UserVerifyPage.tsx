@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PageLayout } from '../components/PageLayout';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:18080/api';
+
 export const UserVerifyPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ export const UserVerifyPage: React.FC = () => {
       setMessage('認証トークンがありません');
       return;
     }
-    fetch(`http://localhost:18080/api/verify-email?token=${token}`)
+    fetch(`${API_BASE_URL}/verify-email?token=${token}`)
       .then(async res => {
         if (res.ok) {
           setStatus('success');

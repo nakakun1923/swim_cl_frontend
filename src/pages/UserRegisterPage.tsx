@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageLayout } from '../components/PageLayout';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:18080/api';
+
 export const UserRegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -27,7 +29,7 @@ export const UserRegisterPage: React.FC = () => {
     }
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:18080/api/users', {
+      const res = await fetch(`${API_BASE_URL}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })

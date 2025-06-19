@@ -36,6 +36,8 @@ const calculateTotalTime = (laps: any[]) => {
   return `${displayMinutes.toString().padStart(2, '0')}:${displaySeconds.toFixed(2).padStart(5, '0')}`;
 };
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:18080/api';
+
 export const RecordListPage: React.FC = () => {
   const navigate = useNavigate();
   const [records, setRecords] = useState<RecordDetail[]>([]);
@@ -142,7 +144,7 @@ export const RecordListPage: React.FC = () => {
     if (window.confirm('この記録を削除してもよろしいですか？')) {
       try {
         // 削除APIを直接呼び出し
-        const response = await fetch(`http://localhost:18080/api/records/${recordId}`, {
+        const response = await fetch(`${API_BASE_URL}/records/${recordId}`, {
           method: 'DELETE',
         });
         if (response.ok) {
