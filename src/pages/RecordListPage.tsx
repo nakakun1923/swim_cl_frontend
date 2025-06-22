@@ -27,7 +27,7 @@ const calculateTotalTime = (laps: any[]) => {
   
   // 最終ラップのタイムを取得
   const lastLap = laps[laps.length - 1];
-  const [hours, minutes, seconds] = lastLap.lap_time.split(':');
+  const [_hours, minutes, seconds] = lastLap.lap_time.split(':');
   const [sec, ms = '00'] = seconds.split('.');
   const totalSeconds = parseInt(minutes) * 60 + parseInt(sec) + parseFloat(`0.${ms}`);
   

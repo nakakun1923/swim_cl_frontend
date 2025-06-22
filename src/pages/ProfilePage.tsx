@@ -49,7 +49,7 @@ export const ProfilePage: React.FC = () => {
     setSuccess(null);
 
     try {
-      const response = await api.put(`/users/uuid/${currentUser.uuid}`, {
+      await api.put(`/users/uuid/${currentUser.uuid}`, {
         name: formData.name,
         email: formData.email,
       });

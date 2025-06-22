@@ -7,7 +7,6 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 // @ts-ignore
 import 'jspdf-autotable';
-import { useNavigate } from 'react-router-dom';
 
 const STYLE_NAMES: { [key: number]: string } = {
   1: '自由形',
@@ -34,11 +33,10 @@ interface RecordWithLaps {
 export const BestsPage: React.FC = () => {
   const { currentUser } = useAuth();
   const [records, setRecords] = useState<RecordWithLaps[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [error, _setError] = useState<string | null>(null);
   const [isShortCourse, setIsShortCourse] = useState(true);
   const [expandedStyles, setExpandedStyles] = useState<{ [key: number]: boolean }>({});
   const contentRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -77,7 +75,7 @@ export const BestsPage: React.FC = () => {
     
     // 最終ラップのタイムを取得
     const lastLap = laps[laps.length - 1];
-    const [hoursStr, minutesStr, secondsStr] = lastLap.lap_time.split(':');
+    const [_hoursStr, minutesStr, secondsStr] = lastLap.lap_time.split(':');
     const [secStr, msStr = '0'] = (secondsStr || '').split('.');
     const minutes = parseInt(minutesStr, 10) || 0;
     const seconds = parseInt(secStr, 10) || 0;
