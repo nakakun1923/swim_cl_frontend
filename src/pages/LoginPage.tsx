@@ -22,7 +22,7 @@ export const LoginPage: React.FC = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
           <h2 className="text-4xl font-extrabold text-gray-900 mb-2">
-            Swim Log
+            SwimCL
           </h2>
           <p className="text-lg text-gray-600">
             水泳記録管理システム
