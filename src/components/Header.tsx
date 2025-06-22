@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
           <div className="flex items-center">
           <img src="/public/logo.png" alt="ロゴ" width={32} height={32} />
             <Link to="/" className="text-xl font-bold text-indigo-600">
-              Swim Log
+              SwimCL
             </Link>
             {currentUser && (
               <div className="hidden sm:flex sm:ml-10 sm:space-x-8">

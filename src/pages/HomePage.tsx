@@ -11,7 +11,7 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6">
-              Swim Log
+              SwimCL
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               あなたの水泳記録を管理し、成長を追跡しましょう。<br></br>
@@ -163,7 +163,7 @@ export const HomePage: React.FC = () => {
       <footer className="bg-gray-800 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-gray-400">
-            © 2025 Swim Log. レース結果を記録、管理、追跡
+            © 2025 SwimCL. レース結果を記録、管理、追跡
           </p>
         </div>
       </footer>
