@@ -96,7 +96,7 @@ export const RecordDetailPage: React.FC = () => {
   };
 
   const formatLapTime = (time: string) => {
-    const [hours, minutes, seconds] = time.split(':');
+    const [_hours, minutes, seconds] = time.split(':');
     const [sec, ms = '00'] = seconds.split('.');
     const totalSeconds = parseInt(minutes) * 60 + parseInt(sec) + parseFloat(`0.${ms}`);
     return formatTime(totalSeconds);
@@ -147,7 +147,7 @@ export const RecordDetailPage: React.FC = () => {
   // ラップごとの通過タイム（秒）配列を取得
   const getPassingTimes = (laps: any[]) => {
     return laps.map((lap: any) => {
-      const [h, m, s] = lap.lap_time.split(":");
+      const [_h, m, s] = lap.lap_time.split(":");
       const [sec, ms = '00'] = s.split('.');
       return parseInt(m) * 60 + parseInt(sec) + parseFloat(`0.${ms}`);
     });

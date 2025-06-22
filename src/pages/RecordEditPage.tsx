@@ -77,7 +77,7 @@ export const RecordEditPage: React.FC = () => {
           is_short_course: record.record.is_short_course,
           memo: record.record.memo || '',
           lap_times: record.laps.map(lap => {
-            const [hours, minutes, seconds] = lap.lap_time.split(':');
+            const [_hours, minutes, seconds] = lap.lap_time.split(':');
             const [sec, ms = '00'] = seconds.split('.');
             return `${minutes}:${sec}.${ms}`;
           }),
