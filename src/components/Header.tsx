@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 export const Header: React.FC = () => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // ページごとのアイコンとタイトル
+  let pageIcon = null;
+  let pageTitle = '';
+  if (location.pathname.startsWith('/records/create')) {
+    pageIcon = <span className="text-lg">＋</span>;
+    pageTitle = '記録追加';
+  } else if (location.pathname.startsWith('/records')) {
+    pageIcon = <span className="text-lg">📄</span>;
+    pageTitle = '記録一覧';
+  } else if (location.pathname.startsWith('/bests')) {
+    pageIcon = <span className="text-lg">🏆</span>;
+    pageTitle = 'ベスト一覧';
+  } else if (location.pathname.startsWith('/profile')) {
+    pageIcon = <span className="text-lg">👤</span>;
+    pageTitle = 'プロフィール';
+  }
+
+  // 現在ページ判定用
+  const isActive = (path: string) => location.pathname.startsWith(path);
 
   const handleLogout = async () => {
     await logout();
@@ -15,9 +36,39 @@ export const Header: React.FC = () => {
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
-          <img src="/public/logo.png" alt="ロゴ" width={32} height={32} />
+            {/* ハンバーガー（スマホのみ表示）をロゴの左に移動 */}
+            <div className="sm:hidden flex items-center">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-indigo-600 focus:outline-none"
+              >
+                <svg
+                  className="h-6 w-6"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  {isMenuOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  )}
+                </svg>
+              </button>
+            </div>
+            <img src="/public/logo.png" alt="ロゴ" width={32} height={32} />
             <Link to="/" className="text-xl font-bold text-indigo-600">
               SwimCL
             </Link>
@@ -30,7 +81,7 @@ export const Header: React.FC = () => {
                   記録一覧
                 </Link>
                 <Link
-                  to="/records/bulk-create"
+                  to="/records/create"
                   className="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium"
                 >
                   記録登録
@@ -47,6 +98,39 @@ export const Header: React.FC = () => {
                 >
                   プロフィール
                 </Link>
+              </div>
+            )}
+          </div>
+
+          {/* スマホ用：ナビゲーションアイコン＋ユーザー名（右揃え） */}
+          <div className="flex-1 flex justify-end items-center gap-2 sm:hidden">
+          {currentUser && (
+            <div>
+              <Link to="/records" className={isActive('/records') && !isActive('/records/create') ? 'mx-1 text-indigo-600' : 'mx-1 text-gray-400'} aria-label="記録一覧">
+                <span className="text-lg">📄</span>
+              </Link>
+              <Link to="/records/create" className={isActive('/records/create') ? 'mx-1 text-indigo-600' : 'mx-1 text-gray-400'} aria-label="記録追加">
+                <span className="text-lg">＋</span>
+              </Link>
+              <Link to="/bests" className={isActive('/bests') ? 'mx-1 text-indigo-600' : 'mx-1 text-gray-400'} aria-label="ベスト一覧">
+                <span className="text-lg">🏆</span>
+              </Link>
+              <Link to="/profile" className={isActive('/profile') ? 'mx-1 text-indigo-600' : 'mx-1 text-gray-400'} aria-label="プロフィール">
+                <span className="text-lg">👤</span>
+              </Link>
+              <a
+                href="#"
+                className="mx-1 text-lg"
+                aria-label="ログアウト"
+                onClick={e => {
+                  e.preventDefault();
+                  if (window.confirm('本当にログアウトしますか？')) {
+                    handleLogout();
+                  }
+                }}
+              >
+                ❌
+              </a>
               </div>
             )}
           </div>
@@ -76,37 +160,6 @@ export const Header: React.FC = () => {
               </Link>
             )}
           </div>
-
-          {/* スマホ版ハンバーガーメニュー */}
-          <div className="sm:hidden flex items-center">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-indigo-600 focus:outline-none"
-            >
-              <svg
-                className="h-6 w-6"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                {isMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -127,7 +180,7 @@ export const Header: React.FC = () => {
                   記録一覧
                 </Link>
                 <Link
-                  to="/records/bulk-create"
+                  to="/records/create"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >

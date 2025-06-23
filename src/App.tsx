@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { RecordListPage } from './pages/RecordListPage';
-import { RecordBulkCreatePage } from './pages/RecordBulkCreatePage';
 import { RecordDetailPage } from './pages/RecordDetailPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { BestsPage } from './pages/BestsPage';
@@ -13,6 +12,7 @@ import { RecordEditPage } from './pages/RecordEditPage';
 import { UserRegisterPage } from './pages/UserRegisterPage';
 import { UserRegisterSentPage } from './pages/UserRegisterSentPage';
 import { UserVerifyPage } from './pages/UserVerifyPage';
+import { RecordCreatePage } from './pages/RecordCreatePage';
 import './index.css';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -39,14 +39,6 @@ export const App: React.FC = () => {
               element={
                 <PrivateRoute>
                   <RecordListPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/records/bulk-create"
-              element={
-                <PrivateRoute>
-                  <RecordBulkCreatePage />
                 </PrivateRoute>
               }
             />
@@ -85,6 +77,14 @@ export const App: React.FC = () => {
             <Route path="/register" element={<UserRegisterPage />} />
             <Route path="/register/sent" element={<UserRegisterSentPage />} />
             <Route path="/verify-email" element={<UserVerifyPage />} />
+            <Route
+              path="/records/create"
+              element={
+                <PrivateRoute>
+                  <RecordCreatePage />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </main>
       </div>
