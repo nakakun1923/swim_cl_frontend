@@ -202,7 +202,7 @@ export const BestsPage: React.FC = () => {
           if (!section) continue;
 
           const canvas = await html2canvas(section as HTMLElement, {
-            scale: 1.5,
+            scale: 3,
             useCORS: true,
             logging: false,
             backgroundColor: '#ffffff',
@@ -317,62 +317,30 @@ export const BestsPage: React.FC = () => {
             </div>
             {expandedStyles[parseInt(styleId)] && (
               <div className="overflow-x-auto">
-                {/* PC版テーブル */}
-                <div className="hidden lg:block">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
-                          距離
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
-                          記録
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
-                          日付
-                        </th>
+                <table className="min-w-full text-xs border border-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-2 py-1">距離</th>
+                      <th className="px-2 py-1">記録</th>
+                      <th className="px-2 py-1">日付</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {records.map(({ distance_id, record }) => (
+                      <tr key={`${styleId}-${distance_id}`} className="hover:bg-gray-50 transition-colors duration-200">
+                        <td className="px-2 py-1 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {DISTANCE_NAMES[distance_id]}
+                        </td>
+                        <td className="px-2 py-1 whitespace-nowrap text-sm font-semibold text-gray-900">
+                          {record ? formatTime(calculateTotalTime(record.laps)) : '-'}
+                        </td>
+                        <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500">
+                          {record ? new Date(record.record.date).toLocaleDateString('ja-JP') : '-'}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {records.map(({ distance_id, record }) => (
-                        <tr key={`${styleId}-${distance_id}`} className="hover:bg-gray-50 transition-colors duration-200">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {DISTANCE_NAMES[distance_id]}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                            {record ? formatTime(calculateTotalTime(record.laps)) : '-'}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {record ? new Date(record.record.date).toLocaleDateString('ja-JP') : '-'}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* モバイル版カード */}
-                <div className="lg:hidden p-4 space-y-3">
-                  {records.map(({ distance_id, record }) => (
-                    <div key={`${styleId}-${distance_id}`} className="bg-white border border-gray-200 rounded-lg p-4">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h4 className="text-lg font-medium text-gray-900">
-                            {DISTANCE_NAMES[distance_id]}
-                          </h4>
-                          <p className="text-sm text-gray-500">
-                            {record ? new Date(record.record.date).toLocaleDateString('ja-JP') : '記録なし'}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-lg font-semibold text-gray-900">
-                            {record ? formatTime(calculateTotalTime(record.laps)) : '-'}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>

@@ -18,10 +18,10 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col justify-start pt-40 px-4 sm:justify-center sm:pt-0 sm:py-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <h2 className="text-4xl font-extrabold text-gray-900 mb-2">
+        <div className="text-center pb-8">
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-1">
             SwimCL
           </h2>
           <p className="text-lg text-gray-600">
@@ -30,13 +30,13 @@ export const LoginPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white/80 backdrop-blur-lg py-8 px-4 shadow-xl sm:rounded-2xl sm:px-10 border border-white/20">
-          <div className="mb-6">
+      <div className="mt-0 sm:mt-4 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white/80 backdrop-blur-lg py-2 px-2 shadow-xl sm:rounded-2xl sm:px-10 border border-white/20">
+          <div className="mb-2">
             <h3 className="text-xl font-semibold text-gray-900 text-center">
               ログイン
             </h3>
-            <p className="mt-2 text-sm text-gray-600 text-center">
+            <p className="mt-1 text-sm text-gray-600 text-center">
               アカウントにログインして記録を管理しましょう
             </p>
           </div>

@@ -125,25 +125,6 @@ export const RecordDetailPage: React.FC = () => {
   // トータルタイム（最終ラップのタイム）
   const totalTime = laps.length > 0 ? formatLapTime(laps[laps.length - 1].lap_time) : '00:00.00';
 
-  // ベスト記録を抽出
-  let bestRecord: any = null;
-  if (recordDetail && allRecords.length > 0) {
-    const sameCondRecords = allRecords.filter(r =>
-      r.record.style_id === record.style_id &&
-      r.record.distance_id === record.distance_id &&
-      r.record.is_short_course === record.is_short_course
-    );
-    bestRecord = sameCondRecords.sort((a, b) => {
-      const getSec = (laps: any[]) => {
-        if (!laps.length) return Infinity;
-        const t = laps[laps.length - 1].lap_time.split(":");
-        const [min, sec] = t[1].split(".");
-        return parseInt(t[0]) * 60 + parseInt(min) + parseFloat(`0.${sec ?? '00'}`);
-      };
-      return getSec(a.laps) - getSec(b.laps);
-    })[0];
-  }
-
   // ラップごとの通過タイム（秒）配列を取得
   const getPassingTimes = (laps: any[]) => {
     return laps.map((lap: any) => {
@@ -152,8 +133,41 @@ export const RecordDetailPage: React.FC = () => {
       return parseInt(m) * 60 + parseInt(sec) + parseFloat(`0.${ms}`);
     });
   };
-  const currentPassingTimes = getPassingTimes(laps);
+
+  // 一覧ページと同じベスト判定ロジック
+  const calculateTotalTime = (laps: any[]) => {
+    if (!laps.length) return Infinity;
+    const lastLap = laps[laps.length - 1];
+    const [_hours, minutes, seconds] = lastLap.lap_time.split(':');
+    const [sec, ms = '00'] = seconds.split('.');
+    return parseInt(minutes) * 60 + parseInt(sec) + parseFloat(`0.${ms}`);
+  };
+
+  // ベスト記録を計算
+  let bestRecord: any = null;
+  if (recordDetail && allRecords.length > 0) {
+    const sameCondRecords = allRecords.filter(r =>
+      r.record.style_id === record.style_id &&
+      r.record.distance_id === record.distance_id &&
+      r.record.is_short_course === record.is_short_course
+    );
+    bestRecord = sameCondRecords.reduce((acc, cur) => {
+      if (!acc || calculateTotalTime(cur.laps) < calculateTotalTime(acc.laps)) {
+        return cur;
+      }
+      return acc;
+    }, null);
+  }
+
+  // ベスト記録の通過タイム
   const bestPassingTimes = bestRecord ? getPassingTimes(bestRecord.laps) : [];
+  const currentPassingTimes = getPassingTimes(laps);
+
+  const groupSize = 4;
+  const lapGroups = [];
+  for (let i = 0; i < laps.length; i += groupSize) {
+    lapGroups.push(laps.slice(i, i + groupSize));
+  }
 
   return (
     <PageLayout 
@@ -174,24 +188,21 @@ export const RecordDetailPage: React.FC = () => {
             編集
           </button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div>
-            <dt className="text-sm font-medium text-gray-500">種目</dt>
-            <dd className="mt-1 text-lg font-semibold text-gray-900">
+        {/* 種目・記録・コース：全デバイス共通リッチ表示 */}
+        <div className="flex flex-row items-center mb-4 overflow-x-auto gap-8 justify-start sm:justify-center">
+          <div className="flex flex-col items-center min-w-0">
+            <span className="text-xs text-gray-500 mb-1">種目</span>
+            <span className="font-bold text-xl text-gray-900 whitespace-nowrap">
               {DISTANCE_NAMES[record.distance_id]}{STYLE_NAMES[record.style_id]}
-            </dd>
+            </span>
           </div>
-          <div>
-            <dt className="text-sm font-medium text-gray-500">記録</dt>
-            <dd className="mt-1 text-lg font-semibold text-gray-900">
-              {totalTime}
-            </dd>
+          <div className="flex flex-col items-center min-w-0">
+            <span className="text-xs text-gray-500 mb-1">記録</span>
+            <span className="font-bold text-xl text-gray-900 whitespace-nowrap">{totalTime}</span>
           </div>
-          <div>
-            <dt className="text-sm font-medium text-gray-500">コース</dt>
-            <dd className="mt-1 text-lg font-semibold text-gray-900">
-              {record.is_short_course ? '短水路' : '長水路'}
-            </dd>
+          <div className="flex flex-col items-center min-w-0">
+            <span className="text-xs text-gray-500 mb-1">コース</span>
+            <span className="font-bold text-base text-gray-700 whitespace-nowrap">{record.is_short_course ? '短水路' : '長水路'}</span>
           </div>
         </div>
         
@@ -207,51 +218,40 @@ export const RecordDetailPage: React.FC = () => {
 
       {/* ラップタイム */}
       <div className="p-4 sm:p-6">
-        
-        {/* PC版テーブル */}
-        <div className="hidden lg:block">
-          <table className="min-w-full divide-y divide-gray-200">
+        {/* PC/SP共通ラップタイム表 */}
+        <div className="w-full">
+          <table className="w-full text-base border border-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-40">
-                  距離
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  タイム
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ラップタイム
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ベストとの差
-                </th>
+                <th className="px-3 py-2 font-bold text-lg">距離</th>
+                <th className="px-3 py-2 font-bold text-lg">タイム</th>
+                <th className="px-3 py-2 font-bold text-lg">ラップ</th>
+                <th className="px-3 py-2 font-bold text-lg">ベスト差</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody>
               {laps.map((lap, index) => {
                 const lapSplit = calculateLapSplit(laps, index);
-                // 通過タイム差分計算
                 let diff = null;
-                if (bestPassingTimes.length > index) {
+                // ベスト記録自身の場合はdiffを表示しない
+                if (
+                  bestRecord && bestRecord.record.id === record.id
+                ) {
+                  diff = null;
+                } else if (
+                  bestPassingTimes.length > index &&
+                  typeof bestPassingTimes[index] === 'number' &&
+                  typeof currentPassingTimes[index] === 'number'
+                ) {
                   diff = currentPassingTimes[index] - bestPassingTimes[index];
                 }
                 return (
-                  <tr key={lap.lap_number} className="hover:bg-gray-50 transition-colors duration-200">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {lap.lap_number * 50}m
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">
-                      {formatLapTime(lap.lap_time)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {lapSplit ? (
-                        <span className="inline-flex items-center px-2 py-1 text-gray-900 font-semibold font-medium">
-                          {lapSplit}
-                        </span>
-                      ) : null}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {diff !== null ? (
+                  <tr key={lap.lap_number}>
+                    <td className="px-3 py-2 text-center text-base">{lap.lap_number * 50}m</td>
+                    <td className="px-3 py-2 text-center font-bold text-base">{formatLapTime(lap.lap_time)}</td>
+                    <td className="px-3 py-2 text-center text-base">{lapSplit ? lapSplit : '-'}</td>
+                    <td className="px-3 py-2 text-center text-base">
+                      {diff !== null && !isNaN(diff) ? (
                         <span className={`font-bold ${diff < 0 ? 'text-red-600' : diff > 0 ? 'text-blue-600' : 'text-gray-400'}`}>
                           {diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)}秒
                         </span>
@@ -264,51 +264,6 @@ export const RecordDetailPage: React.FC = () => {
               })}
             </tbody>
           </table>
-        </div>
-
-        {/* モバイル版カード */}
-        <div className="lg:hidden space-y-3">
-          {laps.map((lap, index) => {
-            const lapSplit = calculateLapSplit(laps, index);
-            // 通過タイム差分計算
-            let diff = null;
-            if (bestPassingTimes.length > index) {
-              diff = currentPassingTimes[index] - bestPassingTimes[index];
-            }
-            return (
-              <div key={lap.lap_number} className="bg-gray-50 rounded-lg p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-900">
-                    {lap.lap_number * 50}m
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div>
-                    <div className="text-xs text-gray-500">通過タイム</div>
-                    <div className="text-lg font-semibold text-gray-900">{formatLapTime(lap.lap_time)}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500">ベストとの差</div>
-                    <div className="text-sm text-gray-500">
-                      {diff !== null ? (
-                        <span className={`font-bold ${diff < 0 ? 'text-red-600' : diff > 0 ? 'text-blue-600' : 'text-gray-400'}`}>
-                          {diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)}秒
-                        </span>
-                      ) : (
-                        <span className="text-gray-400">-</span>
-                      )}
-                    </div>
-                  </div>
-                  {index !== 0 && (
-                    <div>
-                      <div className="text-xs text-gray-500">ラップタイム</div>
-                      <div className="text-medium font-semibold text-gray-900">{lapSplit}</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
     </PageLayout>

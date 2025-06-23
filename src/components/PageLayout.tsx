@@ -25,8 +25,9 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
         {/* ページヘッダー */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 sm:mb-8">
           <div className="px-4 sm:px-6 py-4 sm:py-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="flex items-center gap-4">
+            {/* スマホはタイトルとactionsを横並び、サブタイトルは下 */}
+            <div className="flex flex-row items-center justify-between gap-2 sm:flex-col sm:items-start sm:gap-4">
+              <div className="flex items-center gap-2">
                 {showBackButton && (
                   <button
                     onClick={onBack}
@@ -37,19 +38,17 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
                     </svg>
                   </button>
                 )}
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{title}</h1>
-                  {subtitle && (
-                    <p className="mt-1 text-sm sm:text-base text-gray-600">{subtitle}</p>
-                  )}
-                </div>
+                <h1 className="text-lg sm:text-3xl font-bold text-gray-900 truncate">{title}</h1>
               </div>
               {actions && (
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <div className="flex flex-row gap-2 sm:gap-3">
                   {actions}
                 </div>
               )}
             </div>
+            {subtitle && (
+              <p className="mt-1 text-xs sm:text-base text-gray-600 truncate">{subtitle}</p>
+            )}
           </div>
         </div>
 
