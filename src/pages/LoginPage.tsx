@@ -18,7 +18,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col justify-start pt-40 px-4 sm:justify-center sm:pt-0 sm:py-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col justify-start pt-20 px-4 sm:justify-center sm:pt-0 sm:py-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center pb-8">
           <h2 className="text-4xl font-extrabold text-gray-900 mb-1">

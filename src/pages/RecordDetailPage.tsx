@@ -189,20 +189,33 @@ export const RecordDetailPage: React.FC = () => {
           </button>
         </div>
         {/* 種目・記録・コース：全デバイス共通リッチ表示 */}
-        <div className="flex flex-row items-center mb-4 overflow-x-auto gap-8 justify-start sm:justify-center">
+        <div className="flex flex-row items-center mb-4 overflow-x-auto gap-8 justify-center pr-8">
           <div className="flex flex-col items-center min-w-0">
             <span className="text-xs text-gray-500 mb-1">種目</span>
-            <span className="font-bold text-xl text-gray-900 whitespace-nowrap">
+            <span className="font-bold text-lg text-gray-900 whitespace-nowrap">
               {DISTANCE_NAMES[record.distance_id]}{STYLE_NAMES[record.style_id]}
             </span>
+            <span className="text-base">({record.is_short_course ? '短水路' : '長水路'})</span>
           </div>
           <div className="flex flex-col items-center min-w-0">
             <span className="text-xs text-gray-500 mb-1">記録</span>
-            <span className="font-bold text-xl text-gray-900 whitespace-nowrap">{totalTime}</span>
-          </div>
-          <div className="flex flex-col items-center min-w-0">
-            <span className="text-xs text-gray-500 mb-1">コース</span>
-            <span className="font-bold text-base text-gray-700 whitespace-nowrap">{record.is_short_course ? '短水路' : '長水路'}</span>
+            <span className="font-bold text-lg text-gray-900 whitespace-nowrap">
+              {totalTime}
+            </span>
+            {bestRecord && bestRecord.record.id === record.id ? (
+              <span className="text-base font-bold text-orange-500" title="ベストタイム">(Best!)</span>
+            ) : (
+              bestRecord && (
+                <span className="block text-base">
+                  (ベスト: {(() => {
+                    const bestLap = bestRecord.laps[bestRecord.laps.length - 1];
+                    const [_bm, bmin, bsec] = bestLap.lap_time.split(/:|\./);
+                    const bestTime = `${bmin.padStart(2, '0')}:${bsec.padStart(2, '0')}.${bestLap.lap_time.split('.')[1]?.padEnd(2, '0') || '00'}`;
+                    return bestTime;
+                  })()})
+                </span>
+              )
+            )}
           </div>
         </div>
         
@@ -223,10 +236,10 @@ export const RecordDetailPage: React.FC = () => {
           <table className="w-full text-base border border-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-3 py-2 font-bold text-lg">距離</th>
-                <th className="px-3 py-2 font-bold text-lg">タイム</th>
-                <th className="px-3 py-2 font-bold text-lg">ラップ</th>
-                <th className="px-3 py-2 font-bold text-lg">ベスト差</th>
+                <th className="px-3 py-2 font-bold text-base">距離</th>
+                <th className="px-3 py-2 font-bold text-base">タイム</th>
+                <th className="px-3 py-2 font-bold text-base">ラップ</th>
+                <th className="px-3 py-2 font-bold text-base">ベスト差</th>
               </tr>
             </thead>
             <tbody>
@@ -250,7 +263,7 @@ export const RecordDetailPage: React.FC = () => {
                     <td className="px-3 py-2 text-center text-base">{lap.lap_number * 50}m</td>
                     <td className="px-3 py-2 text-center font-bold text-base">{formatLapTime(lap.lap_time)}</td>
                     <td className="px-3 py-2 text-center text-base">{lapSplit ? lapSplit : '-'}</td>
-                    <td className="px-3 py-2 text-center text-base">
+                    <td className="px-3 py-2 text-center text-sm">
                       {diff !== null && !isNaN(diff) ? (
                         <span className={`font-bold ${diff < 0 ? 'text-red-600' : diff > 0 ? 'text-blue-600' : 'text-gray-400'}`}>
                           {diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)}秒

@@ -48,7 +48,7 @@ export const RecordCreatePage: React.FC = () => {
   };
 
   return (
-    <PageLayout title="新規登録" onBack={() => navigate('/records')}>
+    <PageLayout title="記録登録" onBack={() => navigate('/records')}>
       <div className="p-4 sm:p-6">
         <RecordForm
           mode="create"
