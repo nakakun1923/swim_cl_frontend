@@ -192,18 +192,18 @@ export const RecordDetailPage: React.FC = () => {
         <div className="flex flex-row items-center mb-4 overflow-x-auto gap-8 justify-center pr-8">
           <div className="flex flex-col items-center min-w-0">
             <span className="text-xs text-gray-500 mb-1">種目</span>
-            <span className="font-bold text-lg text-gray-900 whitespace-nowrap">
+            <span className="font-bold text-base text-gray-900 whitespace-nowrap">
               {DISTANCE_NAMES[record.distance_id]}{STYLE_NAMES[record.style_id]}
             </span>
             <span className="text-base">({record.is_short_course ? '短水路' : '長水路'})</span>
           </div>
           <div className="flex flex-col items-center min-w-0">
             <span className="text-xs text-gray-500 mb-1">記録</span>
-            <span className="font-bold text-lg text-gray-900 whitespace-nowrap">
+            <span className="font-bold text-base text-gray-900 whitespace-nowrap">
               {totalTime}
             </span>
             {bestRecord && bestRecord.record.id === record.id ? (
-              <span className="text-base font-bold text-orange-500" title="ベストタイム">(Best!)</span>
+              <span className="text-sm font-bold text-orange-500" title="ベストタイム">(Best!)</span>
             ) : (
               bestRecord && (
                 <span className="block text-base">
