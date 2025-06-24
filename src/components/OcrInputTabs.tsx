@@ -62,7 +62,7 @@ export const OcrInputTabs = ({ onOcrResult }: { onOcrResult: (values: string[]) 
                 <li>行ごとに認識します</li>
                 <li>１ラップごとに縦書きでも認識します</li>
                 <li>通過タイム以外はトリミングしてください</li>
-                <li>()書きや50mといった距離はスキップしています</li>
+                <li>()書きや50m等の距離はスキップしています</li>
               </ul>
               <div className="font-bold text-indigo-700 mb-1">悪い画像例</div>
               <img src="/public/bad_image.png" alt="悪い画像例" className="w-full rounded border" />
