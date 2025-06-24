@@ -286,7 +286,10 @@ export const RecordListPage: React.FC = () => {
                           )}
                         </div>
                       </td>
-                      <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500">
+                      <td
+                        className="px-2 py-1 whitespace-nowrap text-sm text-gray-500 cursor-pointer underline"
+                        onClick={() => { window.scrollTo(0, 0); currentUser && navigate(`/records/${record.record.id}`); }}
+                      >
                         {DISTANCE_NAMES[record.record.distance_id]}{STYLE_NAMES[record.record.style_id]}
                       </td>
                       <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-500">
