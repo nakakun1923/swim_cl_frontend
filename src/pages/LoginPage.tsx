@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -120,12 +121,12 @@ export const LoginPage: React.FC = () => {
           </form>
 
           <div className="mt-6 text-center">
-            <a
-              href="/register"
+            <Link
+              to="/register"
               className="inline-block text-indigo-600 hover:text-indigo-800 text-sm font-medium underline"
             >
               新規ユーザー登録はこちら
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -75,7 +75,7 @@ export const OcrInputTabs = ({ onOcrResult }: { onOcrResult: (values: string[]) 
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          className="mb-2"
+          className="mb-2 pt-4"
           onKeyDown={e => { e.stopPropagation(); if (e.key === 'Enter') e.preventDefault(); }}
         />
         <div className="text-base text-gray-700">画像からラップを自動入力！</div>
