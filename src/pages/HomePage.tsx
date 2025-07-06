@@ -38,7 +38,7 @@ export const HomePage: React.FC = () => {
               to="/register"
               className="inline-block bg-gradient-to-r from-indigo-500 to-blue-400 text-white px-12 py-4 rounded-full text-2xl font-extrabold shadow-lg hover:scale-105 transition"
             >
-              無料で始める
+              登録して始める
             </Link>
           )}
         </div>
@@ -49,7 +49,7 @@ export const HomePage: React.FC = () => {
         <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center hover:scale-105 hover:shadow-2xl transition">
           <div className="mb-4 text-6xl animate-bounce">📷</div>
           <h3 className="font-extrabold text-2xl text-indigo-700 mb-2">画像から記録入力</h3>
-          <p className="text-base text-gray-600 text-center">スマホで撮るだけ、手入力不要。<br />OCRで自動認識！</p>
+          <p className="text-base text-gray-600 text-center">手入力だけでなく、画像からでもタイム登録可能！</p>
         </div>
         <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center hover:scale-105 hover:shadow-2xl transition">
           <div className="mb-4 text-6xl animate-pulse">🏅</div>
@@ -65,7 +65,7 @@ export const HomePage: React.FC = () => {
           <div className="flex flex-col items-center bg-white rounded-xl shadow p-6 w-full sm:w-1/3">
             <div className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl font-bold mb-2">1</div>
             <div className="font-bold mb-1">アカウント登録</div>
-            <div className="text-sm text-gray-500 text-center">まずは無料でアカウント作成</div>
+            <div className="text-sm text-gray-500 text-center">メールアドレスでアカウント作成</div>
           </div>
           <div className="flex flex-col items-center bg-white rounded-xl shadow p-6 w-full sm:w-1/3">
             <div className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl font-bold mb-2">2</div>
